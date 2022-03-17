@@ -1,17 +1,16 @@
 package sait.frms.problemdomain;
 
-
 public class Flight {
 	private String flightName;
-	
-	
-	public void getFlightName() {
-		
-	}
 
-	public void getAirline() {
+	public void getFlightName() {
+
+	}
+	public void getFlightNumber() {
+
+	}
+  
+  public void getAirline() {
 		
 	}
 }
-
-
