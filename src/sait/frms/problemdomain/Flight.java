@@ -8,7 +8,10 @@ public class Flight {
 	public void getFlightName() {
 		
 	}
-	
+
+	public void getAirline() {
+		
+	}
 }
 
 
