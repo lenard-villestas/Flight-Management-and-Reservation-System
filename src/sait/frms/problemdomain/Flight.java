@@ -7,10 +7,16 @@ public class Flight {
 
 	}
 	public void getFlightNumber() {
-
 	}
+
+  
   
   public void getAirline() {
+  }
 		
+
+	public void getFlightPositive() {
 	}
+    
+    
 }
