@@ -16,4 +16,8 @@ public class Flight {
 	public void getFlightPositive() {
 	}
 
+	public void getTicketPrice() {
+
+	}
+
 }
