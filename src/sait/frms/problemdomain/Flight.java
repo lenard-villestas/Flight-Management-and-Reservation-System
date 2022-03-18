@@ -98,4 +98,8 @@ public class Flight {
 	 * isActive(), setName(), setName(name), setCitizen(), setActive(), toString()
 	 */
 	
+	/*
+	 * Test 12
+	 */
+	
 }
