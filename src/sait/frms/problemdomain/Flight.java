@@ -4,6 +4,8 @@
  */
 package sait.frms.problemdomain;
 
+import sait.frms.exception.*;
+
 public class Flight {
 	private String code;
 	private String airlineName;
@@ -14,12 +16,12 @@ public class Flight {
 	private int seats;
 	private double costPerSeat;
 	private boolean domestic;
-	
+
 	public Flight() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @param code
 	 * @param airlineName
@@ -31,14 +33,52 @@ public class Flight {
 	 * @param costPerSeat
 	 * @param domestic
 	 */
-	public Flight(String code, String airlineName, String from, String to, String weekday, String time, int seats,
-			double costPerSeat, boolean domestic) {
+	public Flight(String code, String from, String to, String weekday, String time, int seats, double costPerSeat) {
+
+		this.code = code;
+		this.from = from;
+		this.to = to;
+		this.weekday = weekday;
+		this.time = time;
+		this.seats = seats;
+		this.costPerSeat = costPerSeat;
+
+		parseCode(code);
+		
 	}
 
-	private void parseCode(String code){
-		this.code = code;
+	private void parseCode(String code) {
+		String airLine = "bruh";
+		String abbr = code.substring(0, 2);
+		
+		try {
+			switch (abbr) {
+			case "OA":
+				airLine = "Otto Airlines";
+				this.airlineName = airLine;
+				break;
+			case "VA":
+				airLine = "Vertical Airways";
+				this.airlineName = airLine;
+				break;
+			case "TB":
+				airLine = "Try a Bus Airways";
+				this.airlineName = airLine;
+				break;
+			case "CA":
+				airLine = "Conned Air";
+				this.airlineName = airLine;
+				break;
+			default:
+				throw new InvalidAirLineException("Invalid AirLine Detected, Please check if Flight Code is valid.");
+
+			}
+		} catch (InvalidAirLineException e) {
+
+		}
+
 	}
-	
+
 	/**
 	 * @return the code
 	 */
@@ -168,15 +208,7 @@ public class Flight {
 	@Override
 	public String toString() {
 		return "Flight [code=" + code + ", airlineName=" + airlineName + ", from=" + from + ", to=" + to + ", weekday="
-				+ weekday + ", time=" + time + ", seats=" + seats + ", costPerSeat=" + costPerSeat + ", domestic ="+ domestic +"]";
+				+ weekday + ", time=" + time + ", seats=" + seats + ", costPerSeat=" + costPerSeat + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

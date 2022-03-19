@@ -1,6 +1,7 @@
 package sait.frms.application;
 
 import sait.frms.gui.MainWindow;
+import sait.frms.manager.FlightManager;
 import sait.frms.gui.*;
 
 /**
@@ -11,11 +12,15 @@ public class AppDriver {
 
 	/**
 	 * Entry point to Java application.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		MainWindow mainWindow = new MainWindow();
-		mainWindow.display();
-	}
+		/*
+		 * MainWindow mainWindow = new MainWindow(); mainWindow.display();
+		 */
 
+		FlightManager fm = new FlightManager();
+		fm.test();
+	}
 }
