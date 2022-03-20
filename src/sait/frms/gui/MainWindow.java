@@ -5,6 +5,7 @@ package sait.frms.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -75,7 +76,11 @@ public class MainWindow extends JFrame
 	 */
 	public MainWindow() {
 		this.flightManager = new FlightManager();
-		//this.reservationManager = new ReservationManager();
+		try {
+			this.reservationManager = new ReservationManager();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		setTitle("Flight Reservation Management System");
 		
