@@ -16,11 +16,12 @@ public class AppDriver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*
-		 * MainWindow mainWindow = new MainWindow(); mainWindow.display();
-		 */
 
-		FlightManager fm = new FlightManager();
-		fm.test();
+		MainWindow mainWindow = new MainWindow();
+		mainWindow.display();
+
+		/*
+		 * FlightManager fm = new FlightManager(); fm.test();
+		 */
 	}
 }

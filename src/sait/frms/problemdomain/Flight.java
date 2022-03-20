@@ -207,8 +207,13 @@ public class Flight {
 
 	@Override
 	public String toString() {
+		return code + ", From: " + from + ", To:" + to + ", Day:" + weekday + ", Cost:" + String.format("%,.2f", costPerSeat);
+	}
+	
+	/*
+	 * public String toString() {
 		return "Flight [code=" + code + ", airlineName=" + airlineName + ", from=" + from + ", to=" + to + ", weekday="
 				+ weekday + ", time=" + time + ", seats=" + seats + ", costPerSeat=" + costPerSeat + "]";
 	}
-
+	 */
 }

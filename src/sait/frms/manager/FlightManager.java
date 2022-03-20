@@ -10,9 +10,20 @@ public class FlightManager {
 	private final String APPath = "res/airports.csv";
 	private final String FLPath = "res/flights.csv";
 
-	private static ArrayList<String> airports = new ArrayList<>();
-	private static ArrayList<Flight> flights = new ArrayList<>();
-
+	private ArrayList<String> airports = new ArrayList<>();
+	private ArrayList<Flight> flights = new ArrayList<>();
+	
+	public FlightManager() {
+		
+		try {
+		populateFlights();
+		populateAirports();
+		} catch (IOException e) {
+			System.out.println("Required Files not Found, please contact IT");
+		}
+		
+	}
+	
 	/*
 	 * -Lenard This is just for testing
 	 */
@@ -65,6 +76,14 @@ public class FlightManager {
 		}
 
 		in.close();
+	}
+	
+	public ArrayList<String> getAirports() {
+		return this.airports;
+	}
+	
+	public ArrayList<Flight> getFlights() {
+		return this.flights;
 	}
 
 }
