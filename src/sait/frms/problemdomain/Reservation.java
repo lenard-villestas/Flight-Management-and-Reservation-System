@@ -3,6 +3,7 @@ package sait.frms.problemdomain;
 public class Reservation {
 	private String code;
 	private String flightCode;
+	private String airline;
 	private String name;
 	private String citizenship;
 	private double cost;
@@ -25,10 +26,11 @@ public class Reservation {
 	 * @param cost
 	 * @param active
 	 */
-	public Reservation(String code, String flightCode, String name, String citizenship, double cost, boolean active) {
+	public Reservation(String code, String flightCode, String airline, String name, String citizenship, double cost, boolean active) {
 		super();
 		this.code = code;
 		this.flightCode = flightCode;
+		this.airline = airline;
 		this.name = name;
 		this.citizenship = citizenship;
 		this.cost = cost;
@@ -50,6 +52,16 @@ public class Reservation {
 		return flightCode;
 	}
 
+	
+	/**
+	 * 
+	 * @return the airline
+	 */
+	public String getAirline() {
+		return airline;
+	}
+
+	
 	/**
 	 * @return the name
 	 */
@@ -92,6 +104,15 @@ public class Reservation {
 		this.flightCode = flightCode;
 	}
 
+	/**
+	 * 
+	 * @param airline the airline to set
+	 */
+	
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
+	
 	/**
 	 * @param name the name to set
 	 */

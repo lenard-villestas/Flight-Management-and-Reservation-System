@@ -75,7 +75,7 @@ public class MainWindow extends JFrame
 	 */
 	public MainWindow() {
 		this.flightManager = new FlightManager();
-		this.reservationManager = new ReservationManager();
+		//this.reservationManager = new ReservationManager();
 		
 		setTitle("Flight Reservation Management System");
 		
