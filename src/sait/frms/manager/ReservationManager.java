@@ -3,7 +3,8 @@ package sait.frms.manager;
 import java.io.*;
 import java.util.*;
 
-import sait.frms.problemdomain.Reservation;
+import sait.frms.exception.*;
+import sait.frms.problemdomain.*;
 
 public class ReservationManager {
 
@@ -16,7 +17,9 @@ public class ReservationManager {
 	private static final int RESERVATION_SIZE = 121;
 	
 	public ReservationManager() throws IOException {
-		this.raf = new RandomAccessFile(BINARY_FILE, MODE);
+		
+			this.raf = new RandomAccessFile(BINARY_FILE, MODE);	
+		
 	}
 	
 	// save all reservation objects to RAF
@@ -71,4 +74,146 @@ public class ReservationManager {
 		return r;
 		
 	}
+	
+	public Reservation makeReservation(Flight flight, String name, String citizenship) throws IOException, InvalidCitizenshipException, InvalidNameException, InvalidFlightException {
+		
+		// reservation object fields variables
+		String code = "";
+		String flightCode = "";
+		String airline = "";
+		String travelerName = "";
+		String travelerCitizenship ="";
+		double cost = 0;
+		boolean active = false;
+		
+		// checks for exception in data
+		if(flight.getSeats() > 0 || flight != null) {
+			code = generateReservationCode(flight);
+			flightCode = flight.getCode();
+			airline = flight.getAirlineName();
+			if(name != null) {
+				travelerName = name;
+				if(citizenship != null) {
+					travelerCitizenship = citizenship;
+					cost = flight.getCostPerSeat();
+					active = true;
+				} 
+				 else {
+					throw new InvalidCitizenshipException();
+				} 
+					
+			} 
+			 else {
+				throw new InvalidNameException();
+			} 
+		} 
+		/*else {
+			throw new InvalidFlightException();
+		} */ 
+		// ^ needs try/catch somewhere
+		
+		Reservation createReservation = new Reservation(code, flightCode, airline, travelerName, travelerCitizenship, cost, active);
+		
+		// save reservation to binary file
+		// reservation code
+		String fileCode = String.format("%-5s", createReservation.getCode()); 
+		this.raf.writeUTF(fileCode); //5+2 bytes
+		// flight code
+		String fileFlightCode = String.format("%-7s", createReservation.getFlightCode());
+		this.raf.writeUTF(fileFlightCode); //7+2 bytes
+		// airline
+		String fileAirline = String.format("%-30s", createReservation.getAirline());
+		this.raf.writeUTF(fileAirline); //30+2 bytes
+		// name
+		String fileName = String.format("%-30s", createReservation.getName());
+		this.raf.writeUTF(fileName); //30+2 bytes
+		// citizenship
+		String fileCitizenship = String.format("%-30s", createReservation.getCitizenship());
+		this.raf.writeUTF(fileCitizenship); //30+2 bytes
+		//cost
+		this.raf.writeDouble(createReservation.getCost()); //8 bytes
+		// is active?
+		this.raf.writeBoolean(createReservation.isActive()); //1 bytes
+		
+		reservations.add(createReservation);
+		
+		return createReservation;
+	}
+	
+	public ArrayList<Reservation> findReservations(String code, String airline, String name) {
+		ArrayList<Reservation> foundReservations = new ArrayList<>();
+		
+		try {
+			this.raf.seek(0);
+			for(long pos = 0; pos < this.raf.length(); pos += RESERVATION_SIZE) {
+				Reservation reservation = this.readRecord();
+				if(reservation.getCode().equalsIgnoreCase(code) || reservation.getAirline().equalsIgnoreCase(airline) || reservation.getName().equalsIgnoreCase(name)) {
+					foundReservations.add(reservation);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return foundReservations;
+	}
+	
+	
+	public Reservation findReservationByCode(String code) {
+		
+		try {
+			this.raf.seek(0);
+			for(long pos = 0; pos < this.raf.length(); pos += RESERVATION_SIZE) {
+				Reservation reservation = this.readRecord();
+				if(reservation.getCode().equalsIgnoreCase(code)) {
+					return reservation;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String generateReservationCode(Flight flight) {
+		
+		char fromAirportLetter = flight.getFrom().charAt(0);
+		char toAirportLetter = flight.getTo().charAt(0);
+		String resCode = "";
+		int minCode = 1000;
+		int maxCode = 9999;
+		int numCode = 0;
+		
+		// domestic flights
+		if(fromAirportLetter == 'Y' && toAirportLetter == 'Y') {
+			resCode = "D";
+			numCode = (int) ((Math.random() * (maxCode - minCode)) + minCode);
+			resCode += numCode;
+		}
+		// international flights
+		else {
+			resCode = "I";
+			numCode = (int) ((Math.random() * (maxCode - minCode)) + minCode);
+			resCode += numCode;
+		}
+		
+		return resCode;
+	}
+	
+	private int getAvailableSeats(Flight flight) {
+		int numSeats = flight.getSeats();
+		return numSeats;
+	}
+
+	/* testing
+	 * public static void main(String[] args) {
+		String resCode = "";
+		int minCode = 1000;
+		int maxCode = 9999;
+		int numCode = 0;
+		resCode = "D";
+		numCode = (int) ((Math.random() * (maxCode - minCode)) + minCode);
+		resCode += numCode;
+		System.out.println(resCode);
+	} */
 }
