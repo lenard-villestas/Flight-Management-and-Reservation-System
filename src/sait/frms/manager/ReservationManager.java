@@ -176,16 +176,15 @@ public class ReservationManager {
 	}
 	
 	private String generateReservationCode(Flight flight) {
-		
-		char fromAirportLetter = flight.getFrom().charAt(0);
-		char toAirportLetter = flight.getTo().charAt(0);
+
 		String resCode = "";
 		int minCode = 1000;
 		int maxCode = 9999;
 		int numCode = 0;
+		boolean domestic = flight.isDomestic();
 		
 		// domestic flights
-		if(fromAirportLetter == 'Y' && toAirportLetter == 'Y') {
+		if(domestic == true) {
 			resCode = "D";
 			numCode = (int) ((Math.random() * (maxCode - minCode)) + minCode);
 			resCode += numCode;

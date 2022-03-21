@@ -56,6 +56,8 @@ public class FlightsTab extends TabBase {
 	JTextField costJTextField = new JTextField();
 	JTextField nameJTextField = new JTextField();
 	JTextField citizenshipJTextField = new JTextField();
+	JButton reserveButton = new JButton("Reserve");
+	JButton findButton = new JButton("Find Flights");
 	
 	/**
 	 * variables that will be used to make a reservation
@@ -67,6 +69,7 @@ public class FlightsTab extends TabBase {
 	private double cost;
 	private String name;
 	private String citizenship;
+	Flight selectedFlight = new Flight();
 
 	/**
 	 * Creates the components for flights tab.
@@ -221,7 +224,7 @@ public class FlightsTab extends TabBase {
 		formFieldJPanel.add(textFieldsJPanel);
 
 		// Button
-		JButton reserveButton = new JButton("Reserve");
+		
 		reserveButton.addActionListener(new ButtonListener());
 
 		// add reserve panel components
@@ -245,7 +248,7 @@ public class FlightsTab extends TabBase {
 		finderTitleJLabel.setFont(new Font("serif", Font.PLAIN, 26));
 
 		// adding button for SOUTH
-		JButton findButton = new JButton("Find Flights");
+		
 		findButton.addActionListener(new ButtonListener());
 
 		// making a gridbag panel to nest 2 grid panels (labels and textfields) for
@@ -363,7 +366,26 @@ public class FlightsTab extends TabBase {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			if (e.getSource() == reserveButton) {
+				name = nameJTextField.getText();
+				citizenship = citizenshipJTextField.getText();
+				
+				try {
+				//call makeReservation
+				//Im printing it to test if its working
+				System.out.println(reservationManager.makeReservation(selectedFlight, name, citizenship));
+				
+				
+				} catch (NullPointerException npe) {
+					
+					System.out.println("Flight Information cannot be found, Please select a Flight from the list");
+				} catch (Exception ex) {
+					
+				}
+				
+			} else if (e.getSource() == findButton) {
+				System.out.println("(NOT YET IMPLEMENTED)");
+			}
 		}
 
 	}
@@ -391,6 +413,7 @@ public class FlightsTab extends TabBase {
 				day = flight.getWeekday();
 				time = flight.getTime();
 				cost = flight.getCostPerSeat();
+				selectedFlight = flight;
 
 				//setting value to be shown in reserve Text fields
 				flightJTextField.setText(flightCode);

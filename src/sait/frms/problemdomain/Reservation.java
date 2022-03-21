@@ -144,8 +144,7 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [code=" + code + ", flightCode=" + flightCode + ", name=" + name + ", citizenship="
-				+ citizenship + ", cost=" + cost + ", active=" + active + "]";
+		return code;
 	}
 	
 	

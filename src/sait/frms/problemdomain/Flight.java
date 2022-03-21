@@ -139,6 +139,15 @@ public class Flight {
 	 * @return the domestic
 	 */
 	public boolean isDomestic() {
+		char fromAirportLetter = this.from.charAt(0);
+		char toAirportLetter = this.to.charAt(0);
+		
+		if(fromAirportLetter == 'Y' && toAirportLetter == 'Y') {
+			this.domestic = true;
+		} else {
+			this.domestic = false;
+		}
+		
 		return domestic;
 	}
 
@@ -198,12 +207,6 @@ public class Flight {
 		this.costPerSeat = costPerSeat;
 	}
 
-	/**
-	 * @param domestic the domestic to set
-	 */
-	public void setDomestic(boolean domestic) {
-		this.domestic = domestic;
-	}
 
 	@Override
 	public String toString() {
