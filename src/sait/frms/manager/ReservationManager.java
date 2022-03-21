@@ -115,6 +115,14 @@ public class ReservationManager {
 		Reservation createReservation = new Reservation(code, flightCode, airline, travelerName, travelerCitizenship, cost, active);
 		
 		// save reservation to binary file
+		
+		long position;
+		
+		for (position = 0; position < this.raf.length(); position += RESERVATION_SIZE) {
+			this.raf.seek(position);
+			
+		}
+		this.raf.seek(position);
 		// reservation code
 		String fileCode = String.format("%-5s", createReservation.getCode()); 
 		this.raf.writeUTF(fileCode); //5+2 bytes
