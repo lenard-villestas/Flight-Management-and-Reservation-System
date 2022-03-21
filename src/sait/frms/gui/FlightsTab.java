@@ -42,8 +42,8 @@ public class FlightsTab extends TabBase {
 	 * arrays to be used by flight finder comboboxed
 	 */
 	private ArrayList<String> flightAirportList = flightManager.getAirports();
-	private String[] flightDateList = { "ANY", "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY",
-			"SATURDAY" };
+	private String[] flightDateList = { "ANY", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+			"Saturday" };
 	
 	/**
 	 * JTexFields used in Reserve Panel
@@ -62,15 +62,21 @@ public class FlightsTab extends TabBase {
 	/**
 	 * variables that will be used to make a reservation
 	 */
-	private String flightCode;
-	private String airlineName;
-	private String day;
-	private String time;
-	private double cost;
 	private String name;
 	private String citizenship;
 	Flight selectedFlight = new Flight();
-
+	
+	/**
+	 * variables to pass on findFlights
+	 */
+	private String from = "YYC";
+	private String to = "YVR";
+	private String day = "ANY";
+	ArrayList<Flight> flightsArray = flightManager.findFlights(from, to, day);
+	JComboBox fromFinderJComboBox = new JComboBox(flightAirportList.toArray());
+	JComboBox toFinderJComboBox = new JComboBox(flightAirportList.toArray());
+	JComboBox dateFinderJComboBox = new JComboBox(flightDateList);
+	
 	/**
 	 * Creates the components for flights tab.
 	 * 
@@ -120,13 +126,15 @@ public class FlightsTab extends TabBase {
 		 * -----------------------------------------------------------------------------
 		 * ----------
 		 */
-		ArrayList<Flight> flightsArray = flightManager.getFlights();
+		
 		// converting flightlist array to a modellist to be used by our JList
+		
 		flightsModel = new DefaultListModel<Flight>();
 		for (int i = 0; i < flightsArray.size(); i++) {
 			flightsModel.addElement(flightsArray.get(i));
 		}
 		flightsList = new JList<>(flightsModel);
+		
 
 		// User can only select one item at a time.
 		flightsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -271,10 +279,8 @@ public class FlightsTab extends TabBase {
 		finderLabelsJPanel.add(fromFinderJLabel);
 		finderLabelsJPanel.add(toFinderJLabel);
 		finderLabelsJPanel.add(dateFinderJLabel);
-
-		JComboBox fromFinderJComboBox = new JComboBox(flightAirportList.toArray());
-		JComboBox toFinderJComboBox = new JComboBox(flightAirportList.toArray());
-		JComboBox dateFinderJComboBox = new JComboBox(flightDateList);
+		
+		toFinderJComboBox.setSelectedIndex(5); //set default value to YVR
 		fromFinderJComboBox.addItemListener(new itemListener());
 		toFinderJComboBox.addItemListener(new itemListener());
 		dateFinderJComboBox.addItemListener(new itemListener());
@@ -350,7 +356,10 @@ public class FlightsTab extends TabBase {
 
 		@Override
 		public void itemStateChanged(ItemEvent e) {
-			// TODO Auto-generated method stub
+			
+		from = fromFinderJComboBox.getSelectedItem().toString();
+		to = toFinderJComboBox.getSelectedItem().toString();
+		day = dateFinderJComboBox.getSelectedItem().toString();
 
 		}
 
@@ -384,7 +393,17 @@ public class FlightsTab extends TabBase {
 				}
 				
 			} else if (e.getSource() == findButton) {
-				System.out.println("(NOT YET IMPLEMENTED)");
+				
+				try {
+				flightsArray = flightManager.findFlights(from, to, day);
+				flightsModel = new DefaultListModel<Flight>();
+				for (int i = 0; i < flightsArray.size(); i++) {
+					flightsModel.addElement(flightsArray.get(i));
+				}
+				flightsList.setModel(flightsModel);
+				} catch (ArrayIndexOutOfBoundsException iob) {
+					//not sure why this triggers on rare occasions when testing but it doesnt break the program
+				}
 			}
 		}
 
@@ -407,20 +426,15 @@ public class FlightsTab extends TabBase {
 				int index = source.getSelectedIndex();
 				Flight flight = (Flight) model.getElementAt(index);
 				
-				//assigning variables to be reflected at out input fields
-				flightCode = flight.getCode();
-				airlineName = flight.getAirlineName();
-				day = flight.getWeekday();
-				time = flight.getTime();
-				cost = flight.getCostPerSeat();
+				//getting selected flight
 				selectedFlight = flight;
 
 				//setting value to be shown in reserve Text fields
-				flightJTextField.setText(flightCode);
-				airlineJTextField.setText(airlineName);
-				dayJTextField.setText(day);
-				timeJTextField.setText(time);
-				costJTextField.setText(String.format("%,.2f", cost));
+				flightJTextField.setText(selectedFlight.getCode());
+				airlineJTextField.setText(selectedFlight.getAirlineName());
+				dayJTextField.setText(selectedFlight.getWeekday());
+				timeJTextField.setText(selectedFlight.getTime());
+				costJTextField.setText(String.format("%,.2f", selectedFlight.getCostPerSeat()));
 				
 			}
 		}

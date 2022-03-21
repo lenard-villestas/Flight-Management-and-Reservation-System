@@ -12,18 +12,18 @@ public class FlightManager {
 
 	private ArrayList<String> airports = new ArrayList<>();
 	private ArrayList<Flight> flights = new ArrayList<>();
-	
+
 	public FlightManager() {
-		
+
 		try {
-		populateFlights();
-		populateAirports();
+			populateFlights();
+			populateAirports();
 		} catch (IOException e) {
 			System.out.println("Required Files not Found, please contact IT");
 		}
-		
+
 	}
-	
+
 	/*
 	 * -Lenard This is just for testing
 	 */
@@ -77,13 +77,56 @@ public class FlightManager {
 
 		in.close();
 	}
-	
+
 	public ArrayList<String> getAirports() {
 		return this.airports;
 	}
-	
+
 	public ArrayList<Flight> getFlights() {
 		return this.flights;
+	}
+
+	/**
+	 * This method is to return flights that will be displayed in the control list
+	 * of GUI
+	 * 
+	 * @param from
+	 * @param to
+	 * @param weekday
+	 * @return foundFlights arraylist of Flights
+	 * @author Lenard
+	 */
+	public ArrayList<Flight> findFlights(String from, String to, String weekday) {
+		ArrayList<Flight> foundFlights = new ArrayList<>();
+		String fromAirport = from;
+		String toAirport = to;
+		String day = weekday;
+
+		for (int i = 0; i < flights.size(); i++) {
+			String flightFrom = flights.get(i).getFrom();
+			String flightTo = flights.get(i).getTo();
+			String flightDay = flights.get(i).getWeekday();
+			
+			
+			switch (day) {
+			
+			case "ANY":
+				
+				if (fromAirport.equals(flightFrom) && toAirport.equals(flightTo)) {
+					foundFlights.add(flights.get(i));
+				}
+				break;
+
+			default:
+				if (fromAirport.equals(flightFrom) && toAirport.equals(flightTo) && day.equals(flightDay)) {
+					foundFlights.add(flights.get(i));
+				}
+			}
+		}
+		
+		//System.out.println("flights array: " + flights.size() + " from: " + from + ", to: " + to + ", week: " + day + " foundflights: " + foundFlights.size());
+		
+		return foundFlights;
 	}
 
 }
