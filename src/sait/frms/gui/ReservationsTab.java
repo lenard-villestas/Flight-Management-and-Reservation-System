@@ -1,6 +1,5 @@
-/**
- * Author: Javaria Khan
- */
+
+
 package sait.frms.gui;
 
 import java.awt.*;
