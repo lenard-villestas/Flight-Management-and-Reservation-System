@@ -143,6 +143,7 @@ public class ReservationManager {
 		// is active?
 		this.raf.writeBoolean(createReservation.isActive()); //1 bytes
 		
+		flight.setSeats(flight.getSeats() -1);
 		reservations.add(createReservation);
 		
 		return createReservation;
