@@ -174,41 +174,41 @@ public class ReservationManager {
 				// find by name
 			} else if (findAirline == null && findCode == null) {
 
-				if (findName.equals(resName)) {
+				if (findName.equalsIgnoreCase(resName)) {
 					foundReservations.add(reservations.get(i));
 				}
 
 				// find by code
 			} else if (findAirline == null && findName == null) {
 
-				if (findCode.equals(resCode)) {
+				if (findCode.equalsIgnoreCase(resCode)) {
 					foundReservations.add(reservations.get(i));
 				}
 
 				// find by airline
 			} else if (findCode == null && findName == null) {
 
-				if (findAirline.equals(resAirline)) {
+				if (findAirline.equalsIgnoreCase(resAirline)) {
 					foundReservations.add(reservations.get(i));
 				}
 
 				// find by airline and name
 			} else if (findCode == null) {
 
-				if (findAirline.equals(resAirline) && findName.equals(resName)) {
+				if (findAirline.equalsIgnoreCase(resAirline) && findName.equalsIgnoreCase(resName)) {
 					foundReservations.add(reservations.get(i));
 				}
 				// find by airline and code
 			} else if (findName == null) {
 
-				if (findAirline.equals(resAirline) && findCode.equals(resCode)) {
+				if (findAirline.equalsIgnoreCase(resAirline) && findCode.equalsIgnoreCase(resCode)) {
 					foundReservations.add(reservations.get(i));
 				}
 
 				// find by name and code
 			} else if (findAirline == null) {
 
-				if (findName.equals(resName) && findCode.equals(resCode)) {
+				if (findName.equalsIgnoreCase(resName) && findCode.equalsIgnoreCase(resCode)) {
 					foundReservations.add(reservations.get(i));
 				}
 			}
