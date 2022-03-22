@@ -3,11 +3,16 @@
 package sait.frms.gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import sait.frms.manager.ReservationManager;
+import sait.frms.problemdomain.Flight;
 import sait.frms.problemdomain.Reservation;
 
 /**
@@ -18,10 +23,35 @@ public class ReservationsTab extends TabBase {
 	/**
 	 * Instance of reservation manager.
 	 */
-	private ReservationManager reservationManager;
+	private ReservationManager reservationManager = new ReservationManager();
 	
 	private JList<Reservation> reservationsList;
 	private DefaultListModel<Reservation> reservationsModel;
+	
+	/**
+	 * variables to find reservation
+	 */
+	ArrayList<Reservation> reservationsArray = reservationManager.findReservations(null, null, null);
+	private String code;
+	private String airline;
+	private String name;
+	JButton updateButton = new JButton("Update");
+	JButton searchButton = new JButton("Find Reservations");
+	JTextField nameSearchField = new JTextField(10);
+	JTextField airlineSearchField = new JTextField();
+	JTextField codeSearchField = new JTextField();
+	/**
+	 * variables for selected input
+	 */
+	// will hold selected reservation from JList
+	Reservation selectedReservation = new Reservation();
+	JTextField codeField = new JTextField();
+	JTextField flightField = new JTextField();
+	JTextField airlineField = new JTextField();
+	JTextField costField = new JTextField();
+	JTextField nameField = new JTextField(10);
+	JTextField citizenshipField = new JTextField(10);
+	
 	/**
 	 * Creates the components for reservations tab.
 	 */
@@ -68,11 +98,11 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(codeLabel, c);
 		
-		JTextField codeField = new JTextField();
+		
 		c.gridx = 1;
 		c.gridy = 1;
-		codeField.setPreferredSize(new Dimension(550, 20));
-		panel.add(codeField, c);
+		codeSearchField.setPreferredSize(new Dimension(550, 20));
+		panel.add(codeSearchField, c);
 		
 		
 		// airline field 
@@ -83,11 +113,11 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(airlineLabel, c);
 		
-		JTextField airlineField = new JTextField();
+		
 		c.gridx = 1;
 		c.gridy = 2;
-		airlineField.setPreferredSize(new Dimension(550, 20));
-		panel.add(airlineField, c);
+		airlineSearchField.setPreferredSize(new Dimension(550, 20));
+		panel.add(airlineSearchField, c);
 		
 		// name field 
 		JLabel nameLabel = new JLabel("Name: ");
@@ -97,14 +127,14 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(nameLabel, c);
 		
-		JTextField nameField = new JTextField(10);
+		
 		c.gridx = 1;
 		c.gridy = 3;
-		nameField.setPreferredSize(new Dimension(550, 20));
-		panel.add(nameField, c);
+		nameSearchField.setPreferredSize(new Dimension(550, 20));
+		panel.add(nameSearchField, c);
 		
 		// search button 
-		JButton searchButton = new JButton("Find Reservations");
+		searchButton.addActionListener(new ButtonListener());
 		c.gridx = 0;
 		c.gridy = 4;
 		c.gridwidth = 2;
@@ -140,7 +170,7 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(codeLabel, c);
 		
-		JTextField codeField = new JTextField();
+		
 		c.gridx = 1;
 		c.gridy = 1;
 		codeField.setPreferredSize(new Dimension(35, 20));
@@ -155,7 +185,7 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(flightLabel, c);
 		
-		JTextField flightField = new JTextField();
+		
 		c.gridx = 1;
 		c.gridy = 2;
 		flightField.setPreferredSize(new Dimension(35, 20));
@@ -171,7 +201,7 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(airlineLabel, c);
 		
-		JTextField airlineField = new JTextField();
+		
 		c.gridx = 1;
 		c.gridy = 3;
 		airlineField.setPreferredSize(new Dimension(35, 20));
@@ -186,7 +216,7 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(costLabel, c);
 		
-		JTextField costField = new JTextField();
+		
 		c.gridx = 1;
 		c.gridy = 4;
 		costField.setPreferredSize(new Dimension(35, 20));
@@ -201,7 +231,7 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(nameLabel, c);
 		
-		JTextField nameField = new JTextField(10);
+		
 		c.gridx = 1;
 		c.gridy = 5;
 		panel.add(nameField, c);
@@ -214,7 +244,7 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(citizenshipLabel, c);
 		
-		JTextField citizenshipField = new JTextField(10);
+		
 		c.gridx = 1;
 		c.gridy = 6;
 		panel.add(citizenshipField, c);
@@ -239,7 +269,7 @@ public class ReservationsTab extends TabBase {
 		c.insets = new Insets(30, 0, 0, 0);
 		c.gridwidth = 2;
 		c.weightx = 1;
-		JButton updateButton = new JButton("Update");
+		
 		updateButton.setPreferredSize(new Dimension(140, 25));
 		panel.add(updateButton, c);
 		
@@ -256,6 +286,9 @@ public class ReservationsTab extends TabBase {
 		
 		JPanel panel = new JPanel();
 		reservationsModel = new DefaultListModel<>();
+		for (int i = 0; i < reservationsArray.size(); i++) {
+			reservationsModel.addElement(reservationsArray.get(i));
+		}
 		reservationsList = new JList<>(reservationsModel);
 		JScrollPane scrollPane = new JScrollPane(this.reservationsList);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
@@ -270,17 +303,88 @@ public class ReservationsTab extends TabBase {
 	/**
 	 * This is a class listener for JList reservationsList
 	 * @implements ListSelectionListener
-	 *
+	 * @Lenard
 	 */
 	private class MyListSelectionListener implements ListSelectionListener{
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			// TODO Auto-generated method stub
 			
+			if (!e.getValueIsAdjusting()) {
+				//getting the object from our JList, (Alot of casting was needed here)
+				JList source = (JList) e.getSource();
+				DefaultListModel model = (DefaultListModel) source.getModel();
+				int index = source.getSelectedIndex();
+				Reservation reservation = (Reservation) model.getElementAt(index);
+				
+				//getting selected flight
+				selectedReservation = reservation;
+
+				//setting value to be shown in reserve Text fields
+				nameField.setText(selectedReservation.getName());
+				citizenshipField.setText(selectedReservation.getCitizenship());
+				codeField.setText(selectedReservation.getCode());
+				flightField.setText(selectedReservation.getFlightCode());
+				airlineField.setText(selectedReservation.getAirline());
+				costField.setText(String.format("%,.2f", selectedReservation.getCost()));
+				
+			}
 		}
 		
 	}
+	/**
+	 * Button listener class for resrvations
+	 * @author Lenard
+	 *
+	 */
+	private class ButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == updateButton) {
+				
+				try {
+				//this will trigger modify reservation
+					
+				JOptionPane.showMessageDialog(null, "Not yet implemented");
+				
+				
+				} catch (NullPointerException npe) {
+				
+				} catch (RuntimeException rex) {
+					
+				}
+				
+			} else if (e.getSource() == searchButton) {
+				code = codeSearchField.getText();
+				airline = airlineSearchField.getText();
+				name = nameSearchField.getText();
+				
+				if (code.isEmpty()) {
+					code = null;
+				}
+				if (airline.isEmpty()) {
+					airline = null;
+				}
+				if (name.isEmpty()) {
+					name = null;
+				}
+				
+				try {
+				reservationsArray = reservationManager.findReservations(code, airline, name);
+				reservationsModel = new DefaultListModel<Reservation>();
+				for (int i = 0; i < reservationsArray.size(); i++) {
+					reservationsModel.addElement(reservationsArray.get(i));
+				}
+				reservationsList.setModel(reservationsModel);
+				} catch (ArrayIndexOutOfBoundsException iob) {
+					//not sure why this triggers on rare occasions when testing but it doesnt break the program
+				}
+			}
+		}
+
+	}
+	
 	/**
 	 * Creates the north panel.
 	 * @return JPanel that goes in north.

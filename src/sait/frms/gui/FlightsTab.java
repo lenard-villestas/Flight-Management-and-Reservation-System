@@ -386,7 +386,8 @@ public class FlightsTab extends TabBase {
 				//System.out.println(reservationManager.makeReservation(selectedFlight, name, citizenship));
 					
 				Reservation newReservation = reservationManager.makeReservation(selectedFlight, name, citizenship);
-				System.out.println(newReservation);
+				
+				System.out.println("Reservation :" + newReservation + " created successfully.");
 					
 				JOptionPane.showMessageDialog(null, "Reservation created. Your code is " + newReservation + ".");
 				
