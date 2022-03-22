@@ -15,6 +15,7 @@ import javax.swing.event.*;
 import sait.frms.manager.FlightManager;
 import sait.frms.manager.ReservationManager;
 import sait.frms.problemdomain.Flight;
+import sait.frms.problemdomain.Reservation;
 
 /**
  * Holds the components for the flights tab.
@@ -382,7 +383,12 @@ public class FlightsTab extends TabBase {
 				try {
 				//call makeReservation
 				//Im printing it to test if its working
-				System.out.println(reservationManager.makeReservation(selectedFlight, name, citizenship));
+				//System.out.println(reservationManager.makeReservation(selectedFlight, name, citizenship));
+					
+				Reservation newReservation = reservationManager.makeReservation(selectedFlight, name, citizenship);
+				System.out.println(newReservation);
+					
+				JOptionPane.showMessageDialog(null, "Reservation created. Your code is " + newReservation + ".");
 				
 				
 				} catch (NullPointerException npe) {
