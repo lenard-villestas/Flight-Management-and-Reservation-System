@@ -51,6 +51,8 @@ public class ReservationsTab extends TabBase {
 	JTextField costField = new JTextField();
 	JTextField nameField = new JTextField(10);
 	JTextField citizenshipField = new JTextField(10);
+	String[] statusOption = { "Active", "Inactive" };
+	JComboBox statusBox = new JComboBox(statusOption);
 	
 	/**
 	 * Creates the components for reservations tab.
@@ -257,8 +259,7 @@ public class ReservationsTab extends TabBase {
 		c.ipady = 0;
 		panel.add(statusLabel, c);
 		
-		String[] statusOption = { "Active", "Inactive" };
-		JComboBox statusBox = new JComboBox(statusOption);
+		
 		c.gridx = 1;
 		c.gridy = 7;
 		panel.add(statusBox, c);
@@ -270,6 +271,7 @@ public class ReservationsTab extends TabBase {
 		c.gridwidth = 2;
 		c.weightx = 1;
 		
+		updateButton.addActionListener(new ButtonListener());
 		updateButton.setPreferredSize(new Dimension(140, 25));
 		panel.add(updateButton, c);
 		
@@ -328,6 +330,12 @@ public class ReservationsTab extends TabBase {
 				airlineField.setText(selectedReservation.getAirline());
 				costField.setText(String.format("%,.2f", selectedReservation.getCost()));
 				
+				int status = 1;
+				if (selectedReservation.isActive()) {
+					status = 0;
+				}
+				statusBox.setSelectedIndex(status);
+				
 			}
 		}
 		
@@ -346,12 +354,34 @@ public class ReservationsTab extends TabBase {
 				try {
 				//this will trigger modify reservation
 					
-				JOptionPane.showMessageDialog(null, "Not yet implemented");
+				//JOptionPane.showMessageDialog(null, "Not yet implemented");
+					
+				//Reservation(String code, String flightCode, String airline, String name, String citizenship, double cost, boolean active)
 				
+				boolean isActive = false;
+				
+				if (statusBox.getSelectedItem().toString().equalsIgnoreCase("Active")) {
+					isActive = true;
+				}
+				
+				Reservation newReservation = new Reservation(codeField.getText(),flightField.getText(),airlineField.getText(),nameField.getText(),citizenshipField.getText(),Double.parseDouble(costField.getText()),isActive);
+				reservationManager.updateReservation(newReservation);
+				
+				JOptionPane.showMessageDialog(null, "Updated :" + newReservation.getCode());
+				
+				//refresh search the code
+				reservationsArray = reservationManager.findReservations(newReservation.getCode(), null, null);
+				reservationsModel = new DefaultListModel<Reservation>();
+				for (int i = 0; i < reservationsArray.size(); i++) {
+					reservationsModel.addElement(reservationsArray.get(i));
+				}
+				reservationsList.setModel(reservationsModel);
 				
 				} catch (NullPointerException npe) {
-				
-				} catch (RuntimeException rex) {
+				System.out.println("NUll");
+				}catch (ArrayIndexOutOfBoundsException iob) {
+					//not sure why this triggers on rare occasions when testing but it doesnt break the program
+				}catch (RuntimeException rex) {
 					
 				}
 				

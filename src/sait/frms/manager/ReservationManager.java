@@ -16,11 +16,11 @@ public class ReservationManager {
 	private static final String MODE = "rw";
 	private static final int RESERVATION_SIZE = 121;
 
-	public ReservationManager(){
-		
+	public ReservationManager() {
+
 		try {
-		this.raf = new RandomAccessFile(BINARY_FILE, MODE);
-		populateFromBinary();
+			this.raf = new RandomAccessFile(BINARY_FILE, MODE);
+			populateFromBinary();
 		} catch (IOException ioe) {
 			System.out.println("Binary file cant be loaded");
 		}
@@ -159,8 +159,8 @@ public class ReservationManager {
 		String findCode = code;
 		String findAirline = airline;
 		String findName = name;
-		//for testing System.out.println("find: " + code + airline + name);
-		
+		// for testing System.out.println("find: " + code + airline + name);
+
 		for (int i = 0; i < reservations.size(); i++) {
 			String resCode = reservations.get(i).getCode();
 			String resAirline = reservations.get(i).getAirline();
@@ -270,6 +270,28 @@ public class ReservationManager {
 	private int getAvailableSeats(Flight flight) {
 		int numSeats = flight.getSeats();
 		return numSeats;
+	}
+
+	public void updateReservation(Reservation reservation) {
+		Reservation updatedReservation = reservation;
+
+		try {
+			for (int i = 0; i < reservations.size(); i++) {
+
+				if (reservations.get(i).equals(updatedReservation)) {
+					System.out.println("Match");
+					reservations.set(i, updatedReservation);
+					persist();
+					System.out.println("Saved");
+				}
+				
+			}
+		} catch (IOException e) {
+			// TODO: handle exception
+		} catch (RuntimeException rte) {
+
+		}
+
 	}
 
 	/*

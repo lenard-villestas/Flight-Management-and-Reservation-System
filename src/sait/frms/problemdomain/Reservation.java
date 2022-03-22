@@ -148,4 +148,14 @@ public class Reservation {
 	}
 	
 	
+	public boolean equals(Reservation obj) {
+		boolean equal = false;
+		
+		if (getCode().equals(obj.getCode()) && getFlightCode().equals(obj.getFlightCode())) {
+			equal = true;
+		}
+		
+		
+		return equal;
+	}
 }
