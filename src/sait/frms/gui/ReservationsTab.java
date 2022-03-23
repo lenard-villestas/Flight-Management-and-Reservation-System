@@ -369,7 +369,11 @@ public class ReservationsTab extends TabBase {
 				if (nameField.getText().isEmpty() || citizenshipField.getText().isEmpty()) {
 					throw new EmptyFieldException();
 				}
-				Reservation newReservation = new Reservation(codeField.getText(),flightField.getText(),airlineField.getText(),nameField.getText(),citizenshipField.getText(),Double.parseDouble(costField.getText()),isActive);
+				// parse cost field
+				String removedCostComma = costField.getText();
+				removedCostComma = removedCostComma.replaceAll(",", "");
+				double costFieldAsDouble = Double.parseDouble(removedCostComma);
+				Reservation newReservation = new Reservation(codeField.getText(),flightField.getText(),airlineField.getText(),nameField.getText(),citizenshipField.getText(),costFieldAsDouble,isActive);
 				reservationManager.updateReservation(newReservation);
 				// add seat to flight if reservation set to inactive
 				if(!isActive) {
