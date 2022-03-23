@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import sait.frms.manager.FlightManager;
 import sait.frms.manager.ReservationManager;
 import sait.frms.problemdomain.Flight;
 import sait.frms.problemdomain.Reservation;
@@ -366,6 +367,13 @@ public class ReservationsTab extends TabBase {
 				
 				Reservation newReservation = new Reservation(codeField.getText(),flightField.getText(),airlineField.getText(),nameField.getText(),citizenshipField.getText(),Double.parseDouble(costField.getText()),isActive);
 				reservationManager.updateReservation(newReservation);
+				// add seat to flight if reservation set to inactive
+				if(!isActive) {
+					FlightManager flightManager = new FlightManager();
+					Flight flightByCode = flightManager.findFlightByCode(newReservation.getFlightCode());
+					flightByCode.setSeats(flightByCode.getSeats() +1);
+				}
+				
 				
 				JOptionPane.showMessageDialog(null, "Updated :" + newReservation.getCode());
 				
@@ -381,9 +389,10 @@ public class ReservationsTab extends TabBase {
 				System.out.println("NUll");
 				}catch (ArrayIndexOutOfBoundsException iob) {
 					//not sure why this triggers on rare occasions when testing but it doesnt break the program
-				}catch (RuntimeException rex) {
-					
-				}
+					System.out.println("array  out of bounds");
+				}/*catch (RuntimeException rex) {
+					System.out.println("runtime");
+				}*/
 				
 			} else if (e.getSource() == searchButton) {
 				code = codeSearchField.getText();
