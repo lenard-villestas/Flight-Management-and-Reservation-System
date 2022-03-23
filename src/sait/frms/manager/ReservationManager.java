@@ -218,16 +218,6 @@ public class ReservationManager {
 			}
 		}
 
-		/*
-		 * try { this.raf.seek(0); for(long pos = 0; pos < this.raf.length(); pos +=
-		 * RESERVATION_SIZE) { Reservation reservation = this.readRecord();
-		 * if(reservation.getCode().equalsIgnoreCase(code) ||
-		 * reservation.getAirline().equalsIgnoreCase(airline) ||
-		 * reservation.getName().equalsIgnoreCase(name)) {
-		 * foundReservations.add(reservation); } } } catch (IOException e) {
-		 * e.printStackTrace(); }
-		 */
-
 		return foundReservations;
 	}
 

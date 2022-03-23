@@ -32,8 +32,9 @@ public class Flight {
 	 * @param seats
 	 * @param costPerSeat
 	 * @param domestic
+	 * @throws InvalidAirLineException 
 	 */
-	public Flight(String code, String from, String to, String weekday, String time, int seats, double costPerSeat) {
+	public Flight(String code, String from, String to, String weekday, String time, int seats, double costPerSeat) throws InvalidAirLineException {
 
 		this.code = code;
 		this.from = from;
@@ -44,14 +45,14 @@ public class Flight {
 		this.costPerSeat = costPerSeat;
 
 		parseCode(code);
-		
+
 	}
 
-	private void parseCode(String code) {
+	private void parseCode(String code) throws InvalidAirLineException {
 		String airLine = "bruh";
 		String abbr = code.substring(0, 2);
 		
-		try {
+		
 			switch (abbr) {
 			case "OA":
 				airLine = "Otto Airlines";
@@ -70,12 +71,9 @@ public class Flight {
 				this.airlineName = airLine;
 				break;
 			default:
-				throw new InvalidAirLineException("Invalid AirLine Detected, Please check if Flight Code is valid.");
-
+				throw new InvalidAirLineException();
 			}
-		} catch (InvalidAirLineException e) {
-
-		}
+		
 
 	}
 

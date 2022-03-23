@@ -3,6 +3,7 @@ package sait.frms.manager;
 import java.io.*;
 import java.util.*;
 
+import sait.frms.exception.InvalidAirLineException;
 import sait.frms.problemdomain.*;
 
 public class FlightManager {
@@ -53,15 +54,22 @@ public class FlightManager {
 	private void populateFlights() throws IOException {
 		File input = new File(FLPath);
 		Scanner in = new Scanner(input);
-
+		int invalidCounter = 0;
+		
 		while (in.hasNext()) {
 			String line = in.nextLine();
 			String[] fields = line.split(",");
+			
+			try {
 			flights.add(new Flight(fields[0], fields[1], fields[2], fields[3], fields[4], Integer.parseInt(fields[5]),
 					Double.parseDouble(fields[6])));
+			} catch (InvalidAirLineException e) {
+				//ignore and will not be added to the array
+				invalidCounter++;
+			}
 
 		}
-
+		//System.out.println(invalidCounter +": flights with invalid airlines has been ignored.");
 		in.close();
 	}
 

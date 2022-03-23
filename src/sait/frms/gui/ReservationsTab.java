@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import sait.frms.exception.EmptyFieldException;
 import sait.frms.manager.FlightManager;
 import sait.frms.manager.ReservationManager;
 import sait.frms.problemdomain.Flight;
@@ -364,7 +365,10 @@ public class ReservationsTab extends TabBase {
 				if (statusBox.getSelectedItem().toString().equalsIgnoreCase("Active")) {
 					isActive = true;
 				}
-				
+				//check if name or citizenship is blank
+				if (nameField.getText().isEmpty() || citizenshipField.getText().isEmpty()) {
+					throw new EmptyFieldException();
+				}
 				Reservation newReservation = new Reservation(codeField.getText(),flightField.getText(),airlineField.getText(),nameField.getText(),citizenshipField.getText(),Double.parseDouble(costField.getText()),isActive);
 				reservationManager.updateReservation(newReservation);
 				// add seat to flight if reservation set to inactive
@@ -375,24 +379,25 @@ public class ReservationsTab extends TabBase {
 				}
 				
 				
-				JOptionPane.showMessageDialog(null, "Updated :" + newReservation.getCode());
+				JOptionPane.showMessageDialog(null, "Reservation :" + newReservation.getCode() + " has been updated!");
 				
 				//refresh search the code
-				reservationsArray = reservationManager.findReservations(newReservation.getCode(), null, null);
+				reservationsArray = reservationManager.findReservations(null, null, null);
 				reservationsModel = new DefaultListModel<Reservation>();
 				for (int i = 0; i < reservationsArray.size(); i++) {
 					reservationsModel.addElement(reservationsArray.get(i));
 				}
 				reservationsList.setModel(reservationsModel);
 				
-				} catch (NullPointerException npe) {
+				}catch (EmptyFieldException efEx) {
+					JOptionPane.showMessageDialog(null, "Name or Citizenship cannot be empty, Please try again.");
+				}
+				catch (NullPointerException npe) {
 				System.out.println("NUll");
 				}catch (ArrayIndexOutOfBoundsException iob) {
 					//not sure why this triggers on rare occasions when testing but it doesnt break the program
-					System.out.println("array  out of bounds");
-				}/*catch (RuntimeException rex) {
-					System.out.println("runtime");
-				}*/
+					
+				}
 				
 			} else if (e.getSource() == searchButton) {
 				code = codeSearchField.getText();

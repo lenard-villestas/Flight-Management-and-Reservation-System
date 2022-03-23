@@ -1,5 +1,5 @@
 package sait.frms.gui;
-
+import sait.frms.exception.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -384,7 +384,9 @@ public class FlightsTab extends TabBase {
 				//call makeReservation
 				//Im printing it to test if its working
 				//System.out.println(reservationManager.makeReservation(selectedFlight, name, citizenship));
-					
+				if (name.isEmpty() || citizenship.isEmpty()) {
+					throw new EmptyFieldException();
+				}
 				Reservation newReservation = reservationManager.makeReservation(selectedFlight, name, citizenship);
 				
 				System.out.println("Reservation :" + newReservation + " created successfully.");
@@ -392,10 +394,11 @@ public class FlightsTab extends TabBase {
 				JOptionPane.showMessageDialog(null, "Reservation created. Your code is " + newReservation + ".");
 				
 				
-				} catch (NullPointerException npe) {
-					
-					System.out.println("Flight Information cannot be found, Please select a Flight from the list");
-				} catch (Exception ex) {
+				}catch (NullPointerException npe) {
+					JOptionPane.showMessageDialog(null,"Please select a flight first");
+				}catch (EmptyFieldException efex) {
+					JOptionPane.showMessageDialog(null,"Fields cannot be empty, please try again.");
+				}catch (Exception ex) {
 					
 				}
 				
