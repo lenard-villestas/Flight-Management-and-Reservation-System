@@ -128,5 +128,16 @@ public class FlightManager {
 		
 		return foundFlights;
 	}
+	
+	public Flight findFlightByCode(String code) {
+		Flight flightByCode =null;
+		for (int i = 0; i < flights.size(); i++) {
+			if(flights.get(i).getCode().equalsIgnoreCase(code)) {
+				flightByCode = flights.get(i);
+			}
+		}
+		
+		return flightByCode;
+	}
 
 }

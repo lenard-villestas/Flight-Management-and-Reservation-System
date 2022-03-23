@@ -30,7 +30,10 @@ public class ReservationManager {
 	// save all reservation objects to RAF
 	public void persist() throws IOException {
 
+		long pos = 0;
 		for (int i = 0; i < reservations.size(); i++) {
+			
+	        this.raf.seek(pos);
 			// reservation code
 			String code = String.format("%-5s", reservations.get(i).getCode());
 			this.raf.writeUTF(code); // 5+2 bytes
@@ -50,7 +53,8 @@ public class ReservationManager {
 			this.raf.writeDouble(reservations.get(i).getCost()); // 8 bytes
 			// is active?
 			this.raf.writeBoolean(reservations.get(i).isActive()); // 1 bytes
-
+			pos += RESERVATION_SIZE;
+			
 		}
 	}
 
@@ -280,12 +284,17 @@ public class ReservationManager {
 
 				if (reservations.get(i).equals(updatedReservation)) {
 					System.out.println("Match");
-					reservations.set(i, updatedReservation);
-					persist();
+					//reservations.set(i, updatedReservation);
+					
+					reservations.get(i).setName(updatedReservation.getName());
+					reservations.get(i).setCitizenship(updatedReservation.getCitizenship());
+					reservations.get(i).setActive(updatedReservation.isActive());
 					System.out.println("Saved");
 				}
 				
 			}
+			
+			persist();
 		} catch (IOException e) {
 			// TODO: handle exception
 		} catch (RuntimeException rte) {
