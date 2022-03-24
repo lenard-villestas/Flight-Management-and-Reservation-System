@@ -6,6 +6,13 @@ import java.util.*;
 import sait.frms.exception.InvalidAirLineException;
 import sait.frms.problemdomain.*;
 
+
+/**
+ * This class handles all the flights related functions
+ * <p> for reading and saving flight data to finding flights
+ * @author Lenard
+ * @version March 23, 2022
+ */
 public class FlightManager {
 
 	private final String APPath = "res/airports.csv";
@@ -50,7 +57,13 @@ public class FlightManager {
 		}
 
 	}
-
+	
+	/**
+	 * Reads our input file to populate our flights arraylist
+	 * @author Lenard
+	 * @version March 23, 2022
+	 * @throws IOException
+	 */
 	private void populateFlights() throws IOException {
 		File input = new File(FLPath);
 		Scanner in = new Scanner(input);
@@ -72,7 +85,13 @@ public class FlightManager {
 		//System.out.println(invalidCounter +": flights with invalid airlines has been ignored.");
 		in.close();
 	}
-
+	
+	/**
+	 * Reads our input file to populate our airports arraylist
+	 * @author Lenard
+	 * @version March 23, 2022
+	 * @throws IOException
+	 */
 	private void populateAirports() throws IOException {
 		File input = new File(APPath);
 		Scanner in = new Scanner(input);
@@ -85,11 +104,19 @@ public class FlightManager {
 
 		in.close();
 	}
-
+	
+	/**
+	 * Will return array of airports
+	 * @return airports
+	 */
 	public ArrayList<String> getAirports() {
 		return this.airports;
 	}
-
+	
+	/**
+	 * Will return array of flights
+	 * @return flights
+	 */
 	public ArrayList<Flight> getFlights() {
 		return this.flights;
 	}
@@ -103,6 +130,7 @@ public class FlightManager {
 	 * @param weekday
 	 * @return foundFlights arraylist of Flights
 	 * @author Lenard
+	 * @version March 23, 2022
 	 */
 	public ArrayList<Flight> findFlights(String from, String to, String weekday) {
 		ArrayList<Flight> foundFlights = new ArrayList<>();
@@ -137,6 +165,11 @@ public class FlightManager {
 		return foundFlights;
 	}
 	
+	/**
+	 * Intends to return a flight matched by input code
+	 * @param code
+	 * @return flightByCode
+	 */
 	public Flight findFlightByCode(String code) {
 		Flight flightByCode =null;
 		for (int i = 0; i < flights.size(); i++) {

@@ -1,5 +1,10 @@
 package sait.frms.gui;
-
+/**
+ * Holds the main window of our application
+ * <p>Holds nav bar for switching between flight and reservation tab.
+ * @author Lenard
+ * @version March 23, 2022
+ */
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -158,9 +163,10 @@ public class MainWindow extends JFrame {
 
 	/**
 	 * Inner action listener class that listens for a tab button to be clicked.
+	 * <p>refreshes reservation list when reserve tab is shwon
 	 * 
-	 * @author Nick Hamnett, Mohamed
-	 * @version January 2, 2020
+	 * @author Nick Hamnett, Mohamed, Lenard Villestas
+	 * @version March 23, 2022
 	 */
 	private class TabButtonActionListener implements ActionListener {
 
@@ -170,6 +176,7 @@ public class MainWindow extends JFrame {
 				cardLayout.show(centerPanel, TAB_FLIGHTS);
 			} else if (e.getSource() == reservationsButton) {
 				cardLayout.show(centerPanel, TAB_RESERVATIONS);
+				((ReservationsTab) reservationsTab).refreshList(null,null,null);
 			}
 		}
 

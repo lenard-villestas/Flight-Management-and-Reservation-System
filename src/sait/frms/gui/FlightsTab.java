@@ -1,4 +1,5 @@
 package sait.frms.gui;
+
 import sait.frms.exception.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,9 +19,11 @@ import sait.frms.problemdomain.Flight;
 import sait.frms.problemdomain.Reservation;
 
 /**
- * Holds the components for the flights tab.
+ * Holds the components for the flights tab GUI. Make a reservation panel,
+ * <p>Flight Finder, and Flight List window
  * 
- * @author Lenard
+ * @author Lenard V,Javaria K
+ * @version March 23, 2022
  */
 public class FlightsTab extends TabBase {
 	/**
@@ -45,11 +48,12 @@ public class FlightsTab extends TabBase {
 	private ArrayList<String> flightAirportList = flightManager.getAirports();
 	private String[] flightDateList = { "ANY", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
 			"Saturday" };
-	
+
 	/**
 	 * JTexFields used in Reserve Panel
 	 */
-	//they need to be instance variable so we can modify them later on from other methods
+	// they need to be instance variable so we can modify them later on from other
+	// methods
 	JTextField flightJTextField = new JTextField(20); // 20 to set the width
 	JTextField airlineJTextField = new JTextField();
 	JTextField dayJTextField = new JTextField();
@@ -59,14 +63,14 @@ public class FlightsTab extends TabBase {
 	JTextField citizenshipJTextField = new JTextField();
 	JButton reserveButton = new JButton("Reserve");
 	JButton findButton = new JButton("Find Flights");
-	
+
 	/**
 	 * variables that will be used to make a reservation
 	 */
 	private String name;
 	private String citizenship;
 	Flight selectedFlight = new Flight();
-	
+
 	/**
 	 * variables to pass on findFlights
 	 */
@@ -77,7 +81,7 @@ public class FlightsTab extends TabBase {
 	JComboBox fromFinderJComboBox = new JComboBox(flightAirportList.toArray());
 	JComboBox toFinderJComboBox = new JComboBox(flightAirportList.toArray());
 	JComboBox dateFinderJComboBox = new JComboBox(flightDateList);
-	
+
 	/**
 	 * Creates the components for flights tab.
 	 * 
@@ -127,15 +131,14 @@ public class FlightsTab extends TabBase {
 		 * -----------------------------------------------------------------------------
 		 * ----------
 		 */
-		
+
 		// converting flightlist array to a modellist to be used by our JList
-		
+
 		flightsModel = new DefaultListModel<Flight>();
 		for (int i = 0; i < flightsArray.size(); i++) {
 			flightsModel.addElement(flightsArray.get(i));
 		}
 		flightsList = new JList<>(flightsModel);
-		
 
 		// User can only select one item at a time.
 		flightsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -146,11 +149,12 @@ public class FlightsTab extends TabBase {
 		scrollPane.setPreferredSize(new Dimension(400, 200));
 		flightsList.addListSelectionListener(new MyListSelectionListener());
 
-		/*
+		/**
 		 * Reservation Panel will be added inside centerJPanel
-		 * -----------------------------------------------------------------------------
-		 * ---- this is a border layout panel with a nested gridbag panel which has a
+ 		 * <p>this is a border layout panel with a nested gridbag panel which has a
 		 * nested (2) gridlayout panels
+		 * @author Lenard
+		 * @version March 23, 2022
 		 */
 
 		JPanel reservePanel = new JPanel();
@@ -194,7 +198,6 @@ public class FlightsTab extends TabBase {
 
 		costJTextField.setEditable(false);
 
-		
 		// adding labels and textfields to their grid panels
 		labelsJPanel.add(flightJLabel);
 		textFieldsJPanel.add(flightJTextField);
@@ -233,7 +236,7 @@ public class FlightsTab extends TabBase {
 		formFieldJPanel.add(textFieldsJPanel);
 
 		// Button
-		
+
 		reserveButton.addActionListener(new ButtonListener());
 
 		// add reserve panel components
@@ -243,10 +246,10 @@ public class FlightsTab extends TabBase {
 		reservePanel.add(formFieldJPanel, BorderLayout.CENTER);
 		reservePanel.add(reserveButton, BorderLayout.SOUTH);
 
-		/*
-		 * Flight Finder Panel at the south
-		 * -----------------------------------------------------------------------------
-		 * ----
+		/**
+		 * Flight Finder Panel holds components for finding flights
+		 * @author Lenard
+		 * @version March 23, 2022
 		 */
 		// layout setup
 		JPanel flightFinderPanel = new JPanel();
@@ -257,7 +260,7 @@ public class FlightsTab extends TabBase {
 		finderTitleJLabel.setFont(new Font("serif", Font.PLAIN, 26));
 
 		// adding button for SOUTH
-		
+
 		findButton.addActionListener(new ButtonListener());
 
 		// making a gridbag panel to nest 2 grid panels (labels and textfields) for
@@ -280,8 +283,8 @@ public class FlightsTab extends TabBase {
 		finderLabelsJPanel.add(fromFinderJLabel);
 		finderLabelsJPanel.add(toFinderJLabel);
 		finderLabelsJPanel.add(dateFinderJLabel);
-		
-		toFinderJComboBox.setSelectedIndex(5); //set default value to YVR
+
+		toFinderJComboBox.setSelectedIndex(5); // set default value to YVR
 		fromFinderJComboBox.addItemListener(new itemListener());
 		toFinderJComboBox.addItemListener(new itemListener());
 		dateFinderJComboBox.addItemListener(new itemListener());
@@ -351,16 +354,16 @@ public class FlightsTab extends TabBase {
 	 * Item listener for our ComboBoxed in Flight Finders
 	 * 
 	 * @author Lenard
-	 *
+	 * @version March 23, 2022
 	 */
 	private class itemListener implements ItemListener {
 
 		@Override
 		public void itemStateChanged(ItemEvent e) {
-			
-		from = fromFinderJComboBox.getSelectedItem().toString();
-		to = toFinderJComboBox.getSelectedItem().toString();
-		day = dateFinderJComboBox.getSelectedItem().toString();
+
+			from = fromFinderJComboBox.getSelectedItem().toString();
+			to = toFinderJComboBox.getSelectedItem().toString();
+			day = dateFinderJComboBox.getSelectedItem().toString();
 
 		}
 
@@ -370,7 +373,7 @@ public class FlightsTab extends TabBase {
 	 * An action listener for our buttons (findButton, and reserveButton)
 	 * 
 	 * @author Lenard
-	 *
+	 * @version March 23, 2022
 	 */
 	private class ButtonListener implements ActionListener {
 
@@ -379,40 +382,42 @@ public class FlightsTab extends TabBase {
 			if (e.getSource() == reserveButton) {
 				name = nameJTextField.getText();
 				citizenship = citizenshipJTextField.getText();
-				
+
 				try {
-				//call makeReservation
-				//Im printing it to test if its working
-				//System.out.println(reservationManager.makeReservation(selectedFlight, name, citizenship));
-				if (name.isEmpty() || citizenship.isEmpty()) {
-					throw new EmptyFieldException();
+
+					if (name.isEmpty() || citizenship.isEmpty()) {
+						throw new EmptyFieldException();
+					}
+					if (selectedFlight.getSeats() == 0) {
+						throw new NoSeatsLeftException();
+					}
+					Reservation newReservation = reservationManager.makeReservation(selectedFlight, name, citizenship);
+
+					System.out.println("Reservation :" + newReservation + " created successfully.");
+
+					JOptionPane.showMessageDialog(null, "Reservation created. Your code is " + newReservation + ".");
+
+				} catch (NullPointerException npe) {
+					JOptionPane.showMessageDialog(null, "Please select a flight first");
+				} catch (EmptyFieldException efex) {
+					JOptionPane.showMessageDialog(null, "Fields cannot be empty, please try again.");
+				} catch (NoSeatsLeftException nslEx) {
+					JOptionPane.showMessageDialog(null, "Sorry there are no more seats available for this flight.");
+				} catch (Exception ex) {
 				}
-				Reservation newReservation = reservationManager.makeReservation(selectedFlight, name, citizenship);
-				
-				System.out.println("Reservation :" + newReservation + " created successfully.");
-					
-				JOptionPane.showMessageDialog(null, "Reservation created. Your code is " + newReservation + ".");
-				
-				
-				}catch (NullPointerException npe) {
-					JOptionPane.showMessageDialog(null,"Please select a flight first");
-				}catch (EmptyFieldException efex) {
-					JOptionPane.showMessageDialog(null,"Fields cannot be empty, please try again.");
-				}catch (Exception ex) {
-					
-				}
-				
+
 			} else if (e.getSource() == findButton) {
-				
+
 				try {
-				flightsArray = flightManager.findFlights(from, to, day);
-				flightsModel = new DefaultListModel<Flight>();
-				for (int i = 0; i < flightsArray.size(); i++) {
-					flightsModel.addElement(flightsArray.get(i));
-				}
-				flightsList.setModel(flightsModel);
+					flightsArray = flightManager.findFlights(from, to, day);
+					flightsModel = new DefaultListModel<Flight>();
+					for (int i = 0; i < flightsArray.size(); i++) {
+						flightsModel.addElement(flightsArray.get(i));
+					}
+					flightsList.setModel(flightsModel);
 				} catch (ArrayIndexOutOfBoundsException iob) {
-					//not sure why this triggers on rare occasions when testing but it doesnt break the program
+					// not sure why this triggers on rare occasions when testing but it doesnt break
+					// the program
 				}
 			}
 		}
@@ -423,29 +428,30 @@ public class FlightsTab extends TabBase {
 	 * Called when user selects an item in the JList.
 	 * 
 	 * @author Lenard
+	 * @version March 23, 2022
 	 */
 	private class MyListSelectionListener implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			
+
 			if (!e.getValueIsAdjusting()) {
-				//getting the object from our JList, (Alot of casting was needed here)
+				// getting the object from our JList, (Alot of casting was needed here)
 				JList source = (JList) e.getSource();
 				DefaultListModel model = (DefaultListModel) source.getModel();
 				int index = source.getSelectedIndex();
 				Flight flight = (Flight) model.getElementAt(index);
-				
-				//getting selected flight
+
+				// getting selected flight
 				selectedFlight = flight;
 
-				//setting value to be shown in reserve Text fields
+				// setting value to be shown in reserve Text fields
 				flightJTextField.setText(selectedFlight.getCode());
 				airlineJTextField.setText(selectedFlight.getAirlineName());
 				dayJTextField.setText(selectedFlight.getWeekday());
 				timeJTextField.setText(selectedFlight.getTime());
 				costJTextField.setText(String.format("%,.2f", selectedFlight.getCostPerSeat()));
-				
+
 			}
 		}
 

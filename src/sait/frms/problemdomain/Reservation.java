@@ -1,5 +1,11 @@
 package sait.frms.problemdomain;
 
+/**
+ * Models the Reservation Object
+ * @author Patrick,Lenard,Javaria
+ * @version March 23, 2022
+ */
+
 public class Reservation {
 	private String code;
 	private String flightCode;
@@ -19,6 +25,7 @@ public class Reservation {
 	
 	
 	/**
+	 * Constructs a Reservation with <p>(String code, String flightCode, String airline, String name, String citizenship, double cost, boolean active)
 	 * @param code
 	 * @param flightCode
 	 * @param name
@@ -147,7 +154,11 @@ public class Reservation {
 		return code;
 	}
 	
-	
+	/**
+	 * Used to check by reservation finder for a reservation match in the arraylist
+	 * @param obj
+	 * @return equal a boolean
+	 */
 	public boolean equals(Reservation obj) {
 		boolean equal = false;
 		

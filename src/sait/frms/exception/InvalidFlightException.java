@@ -1,9 +1,15 @@
 package sait.frms.exception;
 
-public class InvalidFlightException extends Exception{
-	
+/**
+ * Thrown if flight doesnt exist or invalid.
+ * 
+ * @author Javaria
+ * @version 1
+ */
+public class InvalidFlightException extends Exception {
+
 	public InvalidFlightException() {
 		super("Flight is booked, or does not exist");
 	}
-	
+
 }

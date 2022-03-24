@@ -1,10 +1,14 @@
-/**
- * Class for Flight model
- * @author Lenard
- */
+
 package sait.frms.problemdomain;
 
 import sait.frms.exception.*;
+
+/**
+ * Models the Flight Object
+ * 
+ * @author Patrick,Lenard,Javaria
+ * @version March 23, 2022
+ */
 
 public class Flight {
 	private String code;
@@ -16,13 +20,17 @@ public class Flight {
 	private int seats;
 	private double costPerSeat;
 	private boolean domestic;
-
+	
+	/**
+	 * Default constructor for Flight 
+	 */
 	public Flight() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
+	 * Constructs a flight with (String code, String from, String to, String weekday, String time, int seats, double costPerSeat)
 	 * @param code
 	 * @param airlineName
 	 * @param from
@@ -32,9 +40,10 @@ public class Flight {
 	 * @param seats
 	 * @param costPerSeat
 	 * @param domestic
-	 * @throws InvalidAirLineException 
+	 * @throws InvalidAirLineException
 	 */
-	public Flight(String code, String from, String to, String weekday, String time, int seats, double costPerSeat) throws InvalidAirLineException {
+	public Flight(String code, String from, String to, String weekday, String time, int seats, double costPerSeat)
+			throws InvalidAirLineException {
 
 		this.code = code;
 		this.from = from;
@@ -47,33 +56,35 @@ public class Flight {
 		parseCode(code);
 
 	}
-
+	/**
+	 * Will give the airline name of a flight using it's flight code
+	 * @param code
+	 * @throws InvalidAirLineException
+	 */
 	private void parseCode(String code) throws InvalidAirLineException {
 		String airLine = "bruh";
 		String abbr = code.substring(0, 2);
-		
-		
-			switch (abbr) {
-			case "OA":
-				airLine = "Otto Airlines";
-				this.airlineName = airLine;
-				break;
-			case "VA":
-				airLine = "Vertical Airways";
-				this.airlineName = airLine;
-				break;
-			case "TB":
-				airLine = "Try a Bus Airways";
-				this.airlineName = airLine;
-				break;
-			case "CA":
-				airLine = "Conned Air";
-				this.airlineName = airLine;
-				break;
-			default:
-				throw new InvalidAirLineException();
-			}
-		
+
+		switch (abbr) {
+		case "OA":
+			airLine = "Otto Airlines";
+			this.airlineName = airLine;
+			break;
+		case "VA":
+			airLine = "Vertical Airways";
+			this.airlineName = airLine;
+			break;
+		case "TB":
+			airLine = "Try a Bus Airways";
+			this.airlineName = airLine;
+			break;
+		case "CA":
+			airLine = "Conned Air";
+			this.airlineName = airLine;
+			break;
+		default:
+			throw new InvalidAirLineException();
+		}
 
 	}
 
@@ -139,13 +150,13 @@ public class Flight {
 	public boolean isDomestic() {
 		char fromAirportLetter = this.from.charAt(0);
 		char toAirportLetter = this.to.charAt(0);
-		
-		if(fromAirportLetter == 'Y' && toAirportLetter == 'Y') {
+
+		if (fromAirportLetter == 'Y' && toAirportLetter == 'Y') {
 			this.domestic = true;
 		} else {
 			this.domestic = false;
 		}
-		
+
 		return domestic;
 	}
 
@@ -205,16 +216,10 @@ public class Flight {
 		this.costPerSeat = costPerSeat;
 	}
 
-
 	@Override
 	public String toString() {
-		return code + ", From: " + from + ", To:" + to + ", Day:" + weekday + ", Cost:" + String.format("%,.2f", costPerSeat);
+		return code + ", From: " + from + ", To:" + to + ", Day:" + weekday + ", Cost:"
+				+ String.format("%,.2f", costPerSeat);
 	}
-	
-	/*
-	 * public String toString() {
-		return "Flight [code=" + code + ", airlineName=" + airlineName + ", from=" + from + ", to=" + to + ", weekday="
-				+ weekday + ", time=" + time + ", seats=" + seats + ", costPerSeat=" + costPerSeat + "]";
-	}
-	 */
+
 }

@@ -6,6 +6,14 @@ import java.util.*;
 import sait.frms.exception.*;
 import sait.frms.problemdomain.*;
 
+/**
+ * Handles all reservation related methods
+ * <p>
+ * finding, making, updating, reading and saving reservations to a RAF
+ * 
+ * @author Lenard, Javaria, Patrick
+ * @version March 23, 2022
+ */
 public class ReservationManager {
 
 	private ArrayList<Reservation> reservations = new ArrayList<>();
@@ -16,6 +24,11 @@ public class ReservationManager {
 	private static final String MODE = "rw";
 	private static final int RESERVATION_SIZE = 121;
 
+	/**
+	 * Default constructor for ReservationManager
+	 * <p>
+	 * will make an RAF and populate it with the reservations array on call
+	 */
 	public ReservationManager() {
 
 		try {
@@ -27,13 +40,19 @@ public class ReservationManager {
 
 	}
 
-	// save all reservation objects to RAF
+	/**
+	 * Persist will save all reservation objects from the arraylist to RAF
+	 * 
+	 * @author Javaria
+	 * @version March 23, 2022
+	 * @throws IOException
+	 */
 	public void persist() throws IOException {
 
 		long pos = 0;
 		for (int i = 0; i < reservations.size(); i++) {
-			
-	        this.raf.seek(pos);
+
+			this.raf.seek(pos);
 			// reservation code
 			String code = String.format("%-5s", reservations.get(i).getCode());
 			this.raf.writeUTF(code); // 5+2 bytes
@@ -54,10 +73,17 @@ public class ReservationManager {
 			// is active?
 			this.raf.writeBoolean(reservations.get(i).isActive()); // 1 bytes
 			pos += RESERVATION_SIZE;
-			
+
 		}
 	}
 
+	/**
+	 * loads RAF to reservations array list
+	 * 
+	 * @author Javaria
+	 * @version March 23, 2022
+	 * @throws IOException
+	 */
 	private void populateFromBinary() throws IOException {
 
 		for (long pos = 0; pos < this.raf.length(); pos += RESERVATION_SIZE) {
@@ -67,7 +93,14 @@ public class ReservationManager {
 		}
 	}
 
-	// reads each reservation object from binary file
+	/**
+	 * Reads each reservation object from binary file
+	 * 
+	 * @author Javaria
+	 * @version March 23, 2022
+	 * @return r a reservation
+	 * @throws IOException
+	 */
 	private Reservation readRecord() throws IOException {
 
 		String code = this.raf.readUTF().trim();
@@ -83,6 +116,21 @@ public class ReservationManager {
 
 	}
 
+	/**
+	 * Will make a reservation and add that to the array and also persist the new
+	 * array to RAF
+	 * 
+	 * @author Javaria
+	 * @version March 23, 2022
+	 * @param flight
+	 * @param name
+	 * @param citizenship
+	 * @return a Reservation object
+	 * @throws IOException
+	 * @throws InvalidCitizenshipException
+	 * @throws InvalidNameException
+	 * @throws InvalidFlightException
+	 */
 	public Reservation makeReservation(Flight flight, String name, String citizenship)
 			throws IOException, InvalidCitizenshipException, InvalidNameException, InvalidFlightException {
 
@@ -157,6 +205,16 @@ public class ReservationManager {
 		return createReservation;
 	}
 
+	/**
+	 * Will search for matched reservations in the array
+	 * 
+	 * @author Lenard
+	 * @version March 23, 2022
+	 * @param code
+	 * @param airline
+	 * @param name
+	 * @return an array of Reservations
+	 */
 	public ArrayList<Reservation> findReservations(String code, String airline, String name) {
 
 		ArrayList<Reservation> foundReservations = new ArrayList<>();
@@ -221,6 +279,12 @@ public class ReservationManager {
 		return foundReservations;
 	}
 
+	/**
+	 * Intends to find reservation in the array from an input code
+	 * 
+	 * @param code
+	 * @return a reservation
+	 */
 	public Reservation findReservationByCode(String code) {
 
 		try {
@@ -237,6 +301,14 @@ public class ReservationManager {
 		return null;
 	}
 
+	/**
+	 * Generates a reservation code from flight code
+	 * 
+	 * @author Javaria
+	 * @version March 23, 2022
+	 * @param flight
+	 * @return resCode String
+	 */
 	private String generateReservationCode(Flight flight) {
 
 		String resCode = "";
@@ -261,11 +333,24 @@ public class ReservationManager {
 		return resCode;
 	}
 
+	/**
+	 * Will return available seats of a flight
+	 * 
+	 * @param flight
+	 * @return numSeats number of seats
+	 */
 	private int getAvailableSeats(Flight flight) {
 		int numSeats = flight.getSeats();
 		return numSeats;
 	}
 
+	/**
+	 * Will persist the change to a reservation on the array and RAF
+	 * 
+	 * @author Lenard
+	 * @version March 23, 2022
+	 * @param reservation
+	 */
 	public void updateReservation(Reservation reservation) {
 		Reservation updatedReservation = reservation;
 
@@ -273,17 +358,17 @@ public class ReservationManager {
 			for (int i = 0; i < reservations.size(); i++) {
 
 				if (reservations.get(i).equals(updatedReservation)) {
-					System.out.println("Match");
-					//reservations.set(i, updatedReservation);
-					
+					// System.out.println("Match");
+					// reservations.set(i, updatedReservation);
+
 					reservations.get(i).setName(updatedReservation.getName());
 					reservations.get(i).setCitizenship(updatedReservation.getCitizenship());
 					reservations.get(i).setActive(updatedReservation.isActive());
 					System.out.println("Saved");
 				}
-				
+
 			}
-			
+
 			persist();
 		} catch (IOException e) {
 			// TODO: handle exception
@@ -293,10 +378,4 @@ public class ReservationManager {
 
 	}
 
-	/*
-	 * testing public static void main(String[] args) { String resCode = ""; int
-	 * minCode = 1000; int maxCode = 9999; int numCode = 0; resCode = "D"; numCode =
-	 * (int) ((Math.random() * (maxCode - minCode)) + minCode); resCode += numCode;
-	 * System.out.println(resCode); }
-	 */
 }

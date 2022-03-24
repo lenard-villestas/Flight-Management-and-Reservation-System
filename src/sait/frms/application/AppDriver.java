@@ -1,3 +1,7 @@
+/**
+ * This class contains our void main
+ * @version 1
+ */
 package sait.frms.application;
 
 import sait.frms.gui.MainWindow;
