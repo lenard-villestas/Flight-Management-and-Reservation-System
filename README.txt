@@ -1,12 +1,25 @@
-This program is intended to be used for Flights and Reservation Management System.
+************************************************************************
+	      Fligh&Reservation Management System Program
+************************************************************************
 
+
+
+This program is intended to be used by Travel agencies for handling flights and reservations.
+Helping them have a more efficient workflow with this management system.
+
+March 23, 2022
 Authors:Group 8 - Lenard Villestas, Javaria Khan, Patrick Orihuela
 
 
 
 
-***********************PROGRAM Instructions:**************************
+***********************PROGRAM Instructions:****************************
 ***General Use
+RUN "Assignment2.jar" to launch application
+
+Using powershell...
+cd to directory of program and excute "java -jar Assignment2.jar"
+
 -App uses (Find Flights, Find Reservations, Make Reservations, Updating Reservations)
 -Please do not resize window any lower than the default size
 -changes are saved automatically
