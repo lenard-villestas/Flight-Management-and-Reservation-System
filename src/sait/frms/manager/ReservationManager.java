@@ -162,10 +162,7 @@ public class ReservationManager {
 				throw new InvalidNameException();
 			}
 		}
-		/*
-		 * else { throw new InvalidFlightException(); }
-		 */
-		// ^ needs try/catch somewhere
+		
 
 		Reservation createReservation = new Reservation(code, flightCode, airline, travelerName, travelerCitizenship,
 				cost, active);

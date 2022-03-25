@@ -386,10 +386,10 @@ public class FlightsTab extends TabBase {
 				try {
 
 					if (name.isEmpty() || citizenship.isEmpty()) {
-						throw new EmptyFieldException();
+						throw new InvalidFieldException();
 					}
 					if (selectedFlight.getSeats() == 0) {
-						throw new NoSeatsLeftException();
+						throw new InvalidSeatsLeftException();
 					}
 					Reservation newReservation = reservationManager.makeReservation(selectedFlight, name, citizenship);
 
@@ -399,9 +399,9 @@ public class FlightsTab extends TabBase {
 
 				} catch (NullPointerException npe) {
 					JOptionPane.showMessageDialog(null, "Please select a flight first");
-				} catch (EmptyFieldException efex) {
+				} catch (InvalidFieldException efex) {
 					JOptionPane.showMessageDialog(null, "Fields cannot be empty, please try again.");
-				} catch (NoSeatsLeftException nslEx) {
+				} catch (InvalidSeatsLeftException nslEx) {
 					JOptionPane.showMessageDialog(null, "Sorry there are no more seats available for this flight.");
 				} catch (Exception ex) {
 				}

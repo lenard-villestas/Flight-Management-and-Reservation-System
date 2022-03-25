@@ -4,7 +4,6 @@
  */
 package sait.frms.application;
 
-import sait.frms.gui.MainWindow;
 import sait.frms.manager.FlightManager;
 import sait.frms.gui.*;
 
