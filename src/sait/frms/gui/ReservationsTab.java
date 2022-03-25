@@ -17,11 +17,9 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import sait.frms.exception.EmptyFieldException;
-import sait.frms.manager.FlightManager;
-import sait.frms.manager.ReservationManager;
-import sait.frms.problemdomain.Flight;
-import sait.frms.problemdomain.Reservation;
+import sait.frms.exception.*;
+import sait.frms.manager.*;
+import sait.frms.problemdomain.*;
 
 /**
  * Holds the components for the reservations tab.
@@ -369,7 +367,7 @@ public class ReservationsTab extends TabBase {
 					}
 					// check if name or citizenship is blank
 					if (nameField.getText().isEmpty() || citizenshipField.getText().isEmpty()) {
-						throw new EmptyFieldException();
+						throw new InvalidFieldException();
 					}
 					// parse cost field
 					String removedCostComma = costField.getText();
@@ -401,7 +399,7 @@ public class ReservationsTab extends TabBase {
 					 * reservationsList.setModel(reservationsModel);
 					 */
 
-				} catch (EmptyFieldException efEx) {
+				} catch (InvalidFieldException efEx) {
 					JOptionPane.showMessageDialog(null, "Name or Citizenship cannot be empty, Please try again.");
 				} catch (NullPointerException npe) {
 					System.out.println("NUll");

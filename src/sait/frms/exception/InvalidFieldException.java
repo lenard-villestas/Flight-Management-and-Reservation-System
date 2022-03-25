@@ -7,9 +7,9 @@ package sait.frms.exception;
  * @author Lenard
  * @version 1
  */
-public class EmptyFieldException extends Exception {
+public class InvalidFieldException extends Exception {
 
-	public EmptyFieldException() {
+	public InvalidFieldException() {
 		// TODO Auto-generated constructor stub
 	}
 

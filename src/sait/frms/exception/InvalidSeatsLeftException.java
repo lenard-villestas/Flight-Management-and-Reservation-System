@@ -7,9 +7,9 @@ package sait.frms.exception;
  * @author Lenard
  * @version 1
  */
-public class NoSeatsLeftException extends Exception {
+public class InvalidSeatsLeftException extends Exception {
 
-	public NoSeatsLeftException() {
+	public InvalidSeatsLeftException() {
 
 	}
 

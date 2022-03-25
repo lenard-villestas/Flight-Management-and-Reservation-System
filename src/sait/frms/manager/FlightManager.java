@@ -168,6 +168,7 @@ public class FlightManager {
 	/**
 	 * Intends to return a flight matched by input code
 	 * @param code
+	 * @author Javaria
 	 * @return flightByCode
 	 */
 	public Flight findFlightByCode(String code) {
