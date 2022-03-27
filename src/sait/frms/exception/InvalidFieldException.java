@@ -10,7 +10,7 @@ package sait.frms.exception;
 public class InvalidFieldException extends Exception {
 
 	public InvalidFieldException() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 }
